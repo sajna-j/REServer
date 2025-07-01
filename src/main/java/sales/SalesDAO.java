@@ -1,5 +1,7 @@
 package sales;
 
+import java.math.BigDecimal;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,55 +13,36 @@ public class SalesDAO {
     // List to hold test data
     private  List<HomeSale> sales = new ArrayList<>();
 
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/";
+    private static final String JDBC_USER = "root";
+    private static final String JDBC_PASSWORD = null;
 
-    public SalesDAO() {
-        // create some test data
-        sales.add(new HomeSale("0", "2257", "2000000"));
-        sales.add(new HomeSale("1", "2262", "1300000"));
-        sales.add(new HomeSale("2", "2000", "4000000"));
-        sales.add(new HomeSale("3", "2000", "1000000"));
-      }
+    public boolean newSale(HomeSale homeSale) throws SQLException {
+        String sql = "INSERT INTO nsw_property_data (property_id, download_date, council_name, purchase_price, address, post_code, property_type, strata_lot_number, property_name, area, area_type, contract_date, settlement_date, zoning, nature_of_property, primary_purpose, legal_description) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    public boolean newSale (HomeSale homeSale){
-            sales.add(homeSale);
+            stmt.setLong(1, homeSale.getPropertyId());
+            stmt.setDate(2, Date.valueOf(homeSale.getDownloadDate()));
+            stmt.setString(3, homeSale.getCouncilName());
+            stmt.setBigDecimal(4, homeSale.getPurchasePrice());
+            stmt.setString(5, homeSale.getAddress());
+            stmt.setString(6, homeSale.getPostCode());
+            stmt.setString(7, homeSale.getPropertyType());
+            stmt.setString(8, homeSale.getStrataLotNumber());
+            stmt.setString(9, homeSale.getPropertyName());
+            stmt.setBigDecimal(10, homeSale.getArea());
+            stmt.setString(11, homeSale.getAreaType());
+            stmt.setDate(12, Date.valueOf(homeSale.getContractDate()));
+            stmt.setDate(13, Date.valueOf(homeSale.getSettlementDate()));
+            stmt.setString(14, homeSale.getZoning());
+            stmt.setString(15, homeSale.getNatureOfProperty());
+            stmt.setString(16, homeSale.getPrimaryPurpose());
+            stmt.setString(17, homeSale.getLegalDescription());
+
+            stmt.executeUpdate();
             return true;
-    }
-
-    // returns Optional wrapping a HomeSale if id is found, empty Optional otherwise
-    public Optional<HomeSale> getSaleById(String saleID) {
-
-        for (HomeSale u : sales) {
-            if (u.saleID.equals(saleID)) {
-                System.out.println("id found ");
-                return Optional.of(u);
-             }
         }
-        return Optional.empty();
     }
-
-    // returns a List of homesales  in a given postCode
-    public List<HomeSale> getSalesByPostCode(String postCode) {
-        System.out.println("postcode is: " + postCode);
-        List<HomeSale> tmp = new ArrayList<>();
-         for (HomeSale u : sales) {
-            if (u.postcode.equals(postCode)) {
-                tmp.add(u);
-                System.out.println("postcode found ");
-            }
-        }
-        return tmp == null ? Collections.emptyList() : tmp;
-    }
-
-    // returns the individual prices for all sales. Potentially large
-    public List<String> getAllSalePrices() {
-        return   sales.stream()
-                .map(e -> e.salePrice)
-                .collect(Collectors.toList());
-    }
-
-    // returns all home sales. Potentially large
-    public List<HomeSale> getAllSales() {
-        return   sales.stream().collect(Collectors.toList());
-    }
-
 }
