@@ -11,7 +11,7 @@ public class SalesDAO {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/properties";
     private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "Mrpickle8852104923!";
+    private static final String JDBC_PASSWORD = null;
 
     public boolean newSale(HomeSale homeSale) throws SQLException {
         String sql = "INSERT INTO property_data (property_id, download_date, council_name, purchase_price, address, post_code, property_type, strata_lot_number, property_name, area, area_type, contract_date, settlement_date, zoning, nature_of_property, primary_purpose, legal_description) " +
@@ -86,7 +86,7 @@ public class SalesDAO {
 
     // returns all home sales. Potentially large
     public List<HomeSale> getAllSales() throws SQLException {
-        String query = "SELECT * FROM property_data";
+        String query = "SELECT * FROM property_data LIMIT 1000";
         List<HomeSale> sales = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
