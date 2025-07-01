@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de501043-aafb-4a41-9e24-49285bd605ad" name="Changes" comment="remove unused imports">
+    <list default="true" id="de501043-aafb-4a41-9e24-49285bd605ad" name="Changes" comment="some stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sales/HomeSale.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/HomeSale.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" afterDir="false" />
     </list>
@@ -30,12 +31,12 @@
     &quot;assignee&quot;: &quot;gortonator&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/gortonator/REServer.git&quot;,
-    &quot;accountId&quot;: &quot;7b8a9b25-7657-4afd-8d68-70e5dda30c83&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sajna-j/REServer.git",
+    "accountId": "66ca5deb-6af2-4b62-861c-693ffbab3e80"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -143,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746429904403</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="some stuff">
+      <option name="closed" value="true" />
+      <created>1751348079506</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1751348079506</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +174,7 @@
     <MESSAGE value="minor fixes" />
     <MESSAGE value="mods to tidy up code" />
     <MESSAGE value="remove unused imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove unused imports" />
+    <MESSAGE value="some stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="some stuff" />
   </component>
 </project>
