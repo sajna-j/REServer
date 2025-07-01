@@ -4,68 +4,68 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class HomeSale {
-    private Long propertyId;
-    private String councilName;
+    private Long property_id;
+    private String council_name;
     private String address;
-    private String postCode;
-    private String propertyType;
-    private String strataLotNumber;
-    private String primaryPurpose;
+    private String post_code;
+    private String property_type;
+    private String strata_lot_number;
+    private String primary_purpose;
     private String zoning;
-    private String propertyName;
-    private String legalDescription;
-    private String areaType;
-    private String natureOfProperty;
+    private String property_name;
+    private String legal_description;
+    private String area_type;
+    private String nature_of_property;
     private BigDecimal area; // scale 4
-    private BigDecimal purchasePrice; // scale 2
-    private LocalDate downloadDate;
-    private LocalDate contractDate;
-    private LocalDate settlementDate;
+    private BigDecimal purchase_price; // scale 2
+    private LocalDate download_date;
+    private LocalDate contract_date;
+    private LocalDate settlement_date;
 
     // No-args constructor
     public HomeSale() {
     }
 
     // Full constructor
-    public HomeSale(Long propertyId, String councilName, String address, String postCode,
-                    String propertyType, String strataLotNumber, String primaryPurpose,
-                    String zoning, String propertyName, String legalDescription,
-                    String areaType, String natureOfProperty, BigDecimal area,
-                    BigDecimal purchasePrice, LocalDate downloadDate,
-                    LocalDate contractDate, LocalDate settlementDate) {
-        this.propertyId = propertyId;
-        this.councilName = councilName;
+    public HomeSale(Long property_id, String council_name, String address, String post_code,
+                    String property_type, String strata_lot_number, String primary_purpose,
+                    String zoning, String property_name, String legal_description,
+                    String area_type, String nature_of_property, BigDecimal area,
+                    BigDecimal purchase_price, LocalDate download_date,
+                    LocalDate contract_date, LocalDate settlement_date) {
+        this.property_id = property_id;
+        this.council_name = council_name;
         this.address = address;
-        this.postCode = postCode;
-        this.propertyType = propertyType;
-        this.strataLotNumber = strataLotNumber;
-        this.primaryPurpose = primaryPurpose;
+        this.post_code = post_code;
+        this.property_type = property_type;
+        this.strata_lot_number = strata_lot_number;
+        this.primary_purpose = primary_purpose;
         this.zoning = zoning;
-        this.propertyName = propertyName;
-        this.legalDescription = legalDescription;
-        this.areaType = areaType;
-        this.natureOfProperty = natureOfProperty;
+        this.property_name = property_name;
+        this.legal_description = legal_description;
+        this.area_type = area_type;
+        this.nature_of_property = nature_of_property;
         this.area = area;
-        this.purchasePrice = purchasePrice;
-        this.downloadDate = downloadDate;
-        this.contractDate = contractDate;
-        this.settlementDate = settlementDate;
+        this.purchase_price = purchase_price;
+        this.download_date = download_date;
+        this.contract_date = contract_date;
+        this.settlement_date = settlement_date;
     }
 
     public Long getPropertyId() {
-        return propertyId;
+        return property_id;
     }
 
-    public void setPropertyId(Long propertyId) {
-        this.propertyId = propertyId;
+    public void setPropertyId(Long property_id) {
+        this.property_id = property_id;
     }
 
     public String getCouncilName() {
-        return councilName;
+        return council_name;
     }
 
-    public void setCouncilName(String councilName) {
-        this.councilName = councilName;
+    public void setCouncilName(String council_name) {
+        this.council_name = council_name;
     }
 
     public String getAddress() {
@@ -77,35 +77,35 @@ public class HomeSale {
     }
 
     public String getPostCode() {
-        return postCode;
+        return post_code;
     }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode;
+    public void setPostCode(String post_code) {
+        this.post_code = post_code;
     }
 
     public String getPropertyType() {
-        return propertyType;
+        return property_type;
     }
 
-    public void setPropertyType(String propertyType) {
-        this.propertyType = propertyType;
+    public void setPropertyType(String property_type) {
+        this.property_type = property_type;
     }
 
     public String getStrataLotNumber() {
-        return strataLotNumber;
+        return strata_lot_number;
     }
 
-    public void setStrataLotNumber(String strataLotNumber) {
-        this.strataLotNumber = strataLotNumber;
+    public void setStrataLotNumber(String strata_lot_number) {
+        this.strata_lot_number = strata_lot_number;
     }
 
     public String getPrimaryPurpose() {
-        return primaryPurpose;
+        return primary_purpose;
     }
 
-    public void setPrimaryPurpose(String primaryPurpose) {
-        this.primaryPurpose = primaryPurpose;
+    public void setPrimaryPurpose(String primary_purpose) {
+        this.primary_purpose = primary_purpose;
     }
 
     public String getZoning() {
@@ -117,35 +117,35 @@ public class HomeSale {
     }
 
     public String getPropertyName() {
-        return propertyName;
+        return property_name;
     }
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
+    public void setPropertyName(String property_name) {
+        this.property_name = property_name;
     }
 
     public String getLegalDescription() {
-        return legalDescription;
+        return legal_description;
     }
 
-    public void setLegalDescription(String legalDescription) {
-        this.legalDescription = legalDescription;
+    public void setLegalDescription(String legal_description) {
+        this.legal_description = legal_description;
     }
 
     public String getAreaType() {
-        return areaType;
+        return area_type;
     }
 
-    public void setAreaType(String areaType) {
-        this.areaType = areaType;
+    public void setAreaType(String area_type) {
+        this.area_type = area_type;
     }
 
     public String getNatureOfProperty() {
-        return natureOfProperty;
+        return nature_of_property;
     }
 
-    public void setNatureOfProperty(String natureOfProperty) {
-        this.natureOfProperty = natureOfProperty;
+    public void setNatureOfProperty(String nature_of_property) {
+        this.nature_of_property = nature_of_property;
     }
 
     public BigDecimal getArea() {
@@ -157,34 +157,34 @@ public class HomeSale {
     }
 
     public BigDecimal getPurchasePrice() {
-        return purchasePrice;
+        return purchase_price;
     }
 
-    public void setPurchasePrice(BigDecimal purchasePrice) {
-        this.purchasePrice = purchasePrice;
+    public void setPurchasePrice(BigDecimal purchase_price) {
+        this.purchase_price = purchase_price;
     }
 
     public LocalDate getDownloadDate() {
-        return downloadDate;
+        return download_date;
     }
 
-    public void setDownloadDate(LocalDate downloadDate) {
-        this.downloadDate = downloadDate;
+    public void setDownloadDate(LocalDate download_date) {
+        this.download_date = download_date;
     }
 
     public LocalDate getContractDate() {
-        return contractDate;
+        return contract_date;
     }
 
-    public void setContractDate(LocalDate contractDate) {
-        this.contractDate = contractDate;
+    public void setContractDate(LocalDate contract_date) {
+        this.contract_date = contract_date;
     }
 
     public LocalDate getSettlementDate() {
-        return settlementDate;
+        return settlement_date;
     }
 
-    public void setSettlementDate(LocalDate settlementDate) {
-        this.settlementDate = settlementDate;
+    public void setSettlementDate(LocalDate settlement_date) {
+        this.settlement_date = settlement_date;
     }
 }
