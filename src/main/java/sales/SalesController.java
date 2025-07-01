@@ -2,6 +2,8 @@ package sales;
 
 import io.javalin.http.Context;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ public class SalesController {
                             .get();
 
         // store new sale in data set
+      try {
         if (homeSales.newSale(sale)) {
             ctx.result("Sale Created");
             ctx.status(201);
@@ -29,12 +32,22 @@ public class SalesController {
             ctx.result("Failed to add sale");
             ctx.status(400);
         }
+      } catch (SQLException e) {
+          ctx.result("Database error: " + e.getMessage());
+          ctx.status(500);
+      }
     }
 
     // implements Get /sales
     public void getAllSales(Context ctx) {
-        List <HomeSale> allSales = homeSales.getAllSales();
-        if (allSales.isEmpty()) {
+      List <HomeSale> allSales = new ArrayList<>();
+      try {
+        allSales = homeSales.getAllSales();
+      } catch (SQLException e) {
+          ctx.result("Database error: " + e.getMessage());
+          ctx.status(500);
+      }
+      if (allSales.isEmpty()) {
             ctx.result("No Sales Found");
             ctx.status(404);
         } else {
@@ -46,16 +59,28 @@ public class SalesController {
     // implements GET /sales/{saleID}
     public void getSaleByID(Context ctx, String id) {
 
-        Optional<HomeSale> sale = homeSales.getSaleById(id);
-        sale.map(ctx::json)
+      Optional<HomeSale> sale = Optional.empty();
+      try {
+        sale = homeSales.getSaleById(id);
+      } catch (SQLException e) {
+          ctx.result("Database error: " + e.getMessage());
+          ctx.status(500);
+      }
+      sale.map(ctx::json)
                 .orElseGet (() -> error (ctx, "Sale not found", 404));
 
     }
 
     // Implements GET /sales/postcode/{postcodeID}
     public void findSaleByPostCode(Context ctx, String postCode) {
-        List<HomeSale> sales = homeSales.getSalesByPostCode(postCode);
-        if (sales.isEmpty()) {
+      List<HomeSale> sales = new ArrayList<>();
+      try {
+        sales = homeSales.getSalesByPostCode(postCode);
+      } catch (SQLException e) {
+          ctx.result("Database error: " + e.getMessage());
+          ctx.status(500);
+      }
+      if (sales.isEmpty()) {
             ctx.result("No sales for postcode found");
             ctx.status(404);
         } else {

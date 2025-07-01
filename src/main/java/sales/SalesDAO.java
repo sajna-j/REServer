@@ -9,12 +9,12 @@ import java.util.Optional;
 public class SalesDAO {
 
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/properties";
     private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = null;
+    private static final String JDBC_PASSWORD = "Mrpickle8852104923!";
 
     public boolean newSale(HomeSale homeSale) throws SQLException {
-        String sql = "INSERT INTO nsw_property_data (property_id, download_date, council_name, purchase_price, address, post_code, property_type, strata_lot_number, property_name, area, area_type, contract_date, settlement_date, zoning, nature_of_property, primary_purpose, legal_description) " +
+        String sql = "INSERT INTO property_data (property_id, download_date, council_name, purchase_price, address, post_code, property_type, strata_lot_number, property_name, area, area_type, contract_date, settlement_date, zoning, nature_of_property, primary_purpose, legal_description) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class SalesDAO {
     }
 
     public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
-        String query = "USE properties; SELECT * FROM property_data WHERE property_id = " + saleID;
+        String query = "SELECT * FROM property_data WHERE property_id = ?";
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, saleID);
@@ -57,7 +57,7 @@ public class SalesDAO {
 
     // returns a List of homesales  in a given postCode
     public List<HomeSale> getSalesByPostCode(String postCode) throws SQLException {
-        String query = "USE properties; SELECT * FROM property_data WHERE post_code = " + postCode;
+        String query = "SELECT * FROM property_data WHERE post_code = ?";
         List<HomeSale> sales = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -72,7 +72,7 @@ public class SalesDAO {
 
     // returns the individual prices for all sales. Potentially large
     public List<BigDecimal> getAllSalePrices() throws SQLException {
-        String query = "USE properties; SELECT purchase_price FROM property_data";
+        String query = "SELECT purchase_price FROM property_data";
         List<BigDecimal> prices = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -86,7 +86,7 @@ public class SalesDAO {
 
     // returns all home sales. Potentially large
     public List<HomeSale> getAllSales() throws SQLException {
-        String query = "USE properties; SELECT * FROM property_data";
+        String query = "SELECT * FROM property_data";
         List<HomeSale> sales = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -102,31 +102,31 @@ public class SalesDAO {
     private HomeSale createHomeSale(ResultSet set) throws SQLException {
         HomeSale homeSale = new HomeSale();
 
-        homeSale.setPropertyId(set.getLong("propertyId"));
+        homeSale.setPropertyId(set.getLong("property_id"));
         if (set.wasNull()) homeSale.setPropertyId(null);  // Handle possible NULL
 
-        homeSale.setCouncilName(set.getString("councilName"));
+        homeSale.setCouncilName(set.getString("council_name"));
         homeSale.setAddress(set.getString("address"));
-        homeSale.setPostCode(set.getString("postCode"));
-        homeSale.setPropertyType(set.getString("propertyType"));
-        homeSale.setStrataLotNumber(set.getString("strataLotNumber"));
-        homeSale.setPrimaryPurpose(set.getString("primaryPurpose"));
+        homeSale.setPostCode(set.getString("post_code"));
+        homeSale.setPropertyType(set.getString("property_type"));
+        homeSale.setStrataLotNumber(set.getString("strata_lot_number"));
+        homeSale.setPrimaryPurpose(set.getString("primary_purpose"));
         homeSale.setZoning(set.getString("zoning"));
-        homeSale.setPropertyName(set.getString("propertyName"));
-        homeSale.setLegalDescription(set.getString("legalDescription"));
-        homeSale.setAreaType(set.getString("areaType"));
-        homeSale.setNatureOfProperty(set.getString("natureOfProperty"));
+        homeSale.setPropertyName(set.getString("property_name"));
+        homeSale.setLegalDescription(set.getString("legal_description"));
+        homeSale.setAreaType(set.getString("area_type"));
+        homeSale.setNatureOfProperty(set.getString("nature_of_property"));
 
         homeSale.setArea(set.getBigDecimal("area"));
-        homeSale.setPurchasePrice(set.getBigDecimal("purchasePrice"));
+        homeSale.setPurchasePrice(set.getBigDecimal("purchase_price"));
 
-        Date downloadDate = set.getDate("downloadDate");
+        Date downloadDate = set.getDate("download_date");
         homeSale.setDownloadDate(downloadDate != null ? downloadDate.toLocalDate() : null);
 
-        Date contractDate = set.getDate("contractDate");
+        Date contractDate = set.getDate("contract_date");
         homeSale.setContractDate(contractDate != null ? contractDate.toLocalDate() : null);
 
-        Date settlementDate = set.getDate("settlementDate");
+        Date settlementDate = set.getDate("settlement_date");
         homeSale.setSettlementDate(settlementDate != null ? settlementDate.toLocalDate() : null);
 
         return homeSale;
