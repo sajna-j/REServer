@@ -14,28 +14,28 @@ public class SalesDAO {
     private static final String JDBC_PASSWORD = null;
 
     public boolean newSale(HomeSale homeSale) throws SQLException {
-        String sql = "INSERT INTO property_data (property_id, download_date, council_name, purchase_price, address, post_code, property_type, strata_lot_number, property_name, area, area_type, contract_date, settlement_date, zoning, nature_of_property, primary_purpose, legal_description) " +
+        String sql = "INSERT INTO property_data (property_id, council_name, address, post_code, property_type, strata_lot_number, primary_purpose, zoning, property_name, legal_description, area_type, nature_of_property, area, purchase_price, download_date, contract_date, settlement_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, homeSale.getPropertyId());
-            stmt.setDate(2, Date.valueOf(homeSale.getDownloadDate()));
-            stmt.setString(3, homeSale.getCouncilName());
-            stmt.setBigDecimal(4, homeSale.getPurchasePrice());
-            stmt.setString(5, homeSale.getAddress());
-            stmt.setString(6, homeSale.getPostCode());
-            stmt.setString(7, homeSale.getPropertyType());
-            stmt.setString(8, homeSale.getStrataLotNumber());
+            stmt.setString(2, homeSale.getCouncilName());
+            stmt.setString(3, homeSale.getAddress());
+            stmt.setString(4, homeSale.getPostCode());
+            stmt.setString(5, homeSale.getPropertyType());
+            stmt.setString(6, homeSale.getStrataLotNumber());
+            stmt.setString(7, homeSale.getPrimaryPurpose());
+            stmt.setString(8, homeSale.getZoning());
             stmt.setString(9, homeSale.getPropertyName());
-            stmt.setBigDecimal(10, homeSale.getArea());
+            stmt.setString(10, homeSale.getLegalDescription());
             stmt.setString(11, homeSale.getAreaType());
-            stmt.setDate(12, Date.valueOf(homeSale.getContractDate()));
-            stmt.setDate(13, Date.valueOf(homeSale.getSettlementDate()));
-            stmt.setString(14, homeSale.getZoning());
-            stmt.setString(15, homeSale.getNatureOfProperty());
-            stmt.setString(16, homeSale.getPrimaryPurpose());
-            stmt.setString(17, homeSale.getLegalDescription());
+            stmt.setString(12, homeSale.getNatureOfProperty());
+            stmt.setBigDecimal(13, homeSale.getArea());
+            stmt.setBigDecimal(14, homeSale.getPurchasePrice());
+            stmt.setDate(15, Date.valueOf(homeSale.getDownloadDate()));
+            stmt.setDate(16, Date.valueOf(homeSale.getContractDate()));
+            stmt.setDate(17, Date.valueOf(homeSale.getSettlementDate()));
 
             stmt.executeUpdate();
             return true;
