@@ -98,6 +98,44 @@ public class SalesDAO {
         return sales;
     }
 
+    public List<PricePerPostCode> getAveragePrice() throws SQLException {
+        String query = getPricePerQuery("AVG");
+        List<PricePerPostCode> pairs = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet set = stmt.executeQuery();
+            while (set.next()) {
+                pairs.add(createPricePer(set));
+            }
+        }
+        return pairs;
+    }
+
+    public List<PricePerPostCode> getHighPrice() throws SQLException {
+        String query = getPricePerQuery("MAX");
+        List<PricePerPostCode> pairs = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet set = stmt.executeQuery();
+            while (set.next()) {
+                pairs.add(createPricePer(set));
+            }
+        }
+        return pairs;
+    }
+
+    public List<PricePerPostCode> getLowPrice() throws SQLException {
+        String query = getPricePerQuery("MIN");
+        List<PricePerPostCode> pairs = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet set = stmt.executeQuery();
+            while (set.next()) {
+                pairs.add(createPricePer(set));
+            }
+        }
+        return pairs;
+    }
 
     private HomeSale createHomeSale(ResultSet set) throws SQLException {
         HomeSale homeSale = new HomeSale();
@@ -130,6 +168,17 @@ public class SalesDAO {
         homeSale.setSettlementDate(settlementDate != null ? settlementDate.toLocalDate() : null);
 
         return homeSale;
+    }
+
+    private PricePerPostCode createPricePer(ResultSet set) throws SQLException {
+        PricePerPostCode pricePerPostCode = new PricePerPostCode();
+        pricePerPostCode.setPost_code(set.getInt("post_code"));
+        pricePerPostCode.setPrice_per_square_meter(set.getDouble("price_per_unit"));
+        return pricePerPostCode;
+    }
+
+    private String getPricePerQuery(String op) {
+        return "SELECT post_code, ROUND(" + op + "(purchase_price / CASE WHEN area_type = 'H' THEN area * 10000 ELSE area END), 2) AS price_per_unit FROM property_data WHERE area IS NOT NULL AND post_code IS NOT NULL AND post_code >= 2000 AND area_type IS NOT NULL GROUP BY post_code;";
     }
 
 }

@@ -46,9 +46,16 @@ public class REServer {
                 app.get("/sales/postcode/{postcode}", ctx -> {
                     salesHandler.findSaleByPostCode(ctx, ctx.pathParam("postcode"));
                 });
+                app.get("/sales/price_per_square_meter/average", ctx -> {
+                    salesHandler.averagePricePerSquareMeter(ctx);
+                });
+                app.get("/sales/price_per_square_meter/high", ctx -> {
+                    salesHandler.highPricePerSquareMeter(ctx);
+                });
+                app.get("/sales/price_per_square_meter/low", ctx -> {
+                    salesHandler.lowPricePerSquareMeter(ctx);
+                });
             });
-
-
         }
 }
 

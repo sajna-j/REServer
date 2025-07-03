@@ -1,6 +1,7 @@
 package sales;
 
 import io.javalin.http.Context;
+import kotlin.Pair;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -88,6 +89,57 @@ public class SalesController {
             ctx.status(200);
         }
     }
+
+    public void averagePricePerSquareMeter(Context ctx) {
+      List<PricePerPostCode> allPairs = new ArrayList<>();
+      try {
+        allPairs = homeSales.getAveragePrice();
+      } catch (SQLException e) {
+        ctx.result("Database error: " + e.getMessage());
+        ctx.status(500);
+      }
+      if (allPairs.isEmpty()) {
+        ctx.result("No Sales Found");
+        ctx.status(404);
+      } else {
+        ctx.json(allPairs);
+        ctx.status(200);
+      }
+    }
+
+  public void highPricePerSquareMeter(Context ctx) {
+    List<PricePerPostCode> allPairs = new ArrayList<>();
+    try {
+      allPairs = homeSales.getHighPrice();
+    } catch (SQLException e) {
+      ctx.result("Database error: " + e.getMessage());
+      ctx.status(500);
+    }
+    if (allPairs.isEmpty()) {
+      ctx.result("No Sales Found");
+      ctx.status(404);
+    } else {
+      ctx.json(allPairs);
+      ctx.status(200);
+    }
+  }
+
+  public void lowPricePerSquareMeter(Context ctx) {
+    List<PricePerPostCode> allPairs = new ArrayList<>();
+    try {
+      allPairs = homeSales.getLowPrice();
+    } catch (SQLException e) {
+      ctx.result("Database error: " + e.getMessage());
+      ctx.status(500);
+    }
+    if (allPairs.isEmpty()) {
+      ctx.result("No Sales Found");
+      ctx.status(404);
+    } else {
+      ctx.json(allPairs);
+      ctx.status(200);
+    }
+  }
 
     private Context error(Context ctx, String msg, int code) {
         ctx.result(msg);
