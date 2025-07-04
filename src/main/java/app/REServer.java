@@ -21,8 +21,8 @@ public class REServer {
                     definition.withOpenApiInfo(info -> info.setTitle("Real Estate API"));
                 });
             }));
-            config.registerPlugin(new SwaggerPlugin());
-            config.registerPlugin(new ReDocPlugin());
+            config.registerPlugin(new SwaggerPlugin(uiConfig -> uiConfig.setUiPath("/docs/swagger")));
+            config.registerPlugin(new ReDocPlugin(uiConfig -> uiConfig.setUiPath("/docs/redoc")));
 
             config.router.apiBuilder(() -> {
                 get("/", ctx -> ctx.result("Real Estate server is running"));
@@ -36,7 +36,7 @@ public class REServer {
             });
         }).start(7070);
 
-        System.out.println("Swagger UI: http://localhost:7070/swagger-ui");
-        System.out.println("ReDoc:      http://localhost:7070/redoc");
+        System.out.println("Swagger UI: http://localhost:7070/docs/swagger");
+        System.out.println("ReDoc:      http://localhost:7070/docs/redoc");
     }
 }
