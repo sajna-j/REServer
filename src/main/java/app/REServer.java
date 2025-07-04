@@ -35,8 +35,5 @@ public class REServer {
                 get("/sales/price_per_square_meter/low", ctx -> salesHandler.lowPricePerSquareMeter(ctx));
             });
         }).start(7070);
-
-        System.out.println("Swagger UI: http://localhost:7070/docs/swagger");
-        System.out.println("ReDoc:      http://localhost:7070/docs/redoc");
     }
 }

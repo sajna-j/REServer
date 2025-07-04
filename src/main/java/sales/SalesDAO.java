@@ -172,8 +172,8 @@ public class SalesDAO {
 
     private PricePerPostCode createPricePer(ResultSet set) throws SQLException {
         PricePerPostCode pricePerPostCode = new PricePerPostCode();
-        pricePerPostCode.setPost_code(set.getInt("post_code"));
-        pricePerPostCode.setPrice_per_square_meter(set.getDouble("price_per_unit"));
+        pricePerPostCode.setPostCode(set.getInt("post_code"));
+        pricePerPostCode.setPricePerSquareMeter(set.getDouble("price_per_unit"));
         return pricePerPostCode;
     }
 
