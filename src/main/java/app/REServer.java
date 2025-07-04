@@ -1,55 +1,42 @@
 package app;
+
 import io.javalin.Javalin;
-import io.javalin.config.JavalinConfig;
-import sales.SalesDAO;
+import io.javalin.openapi.plugin.OpenApiPlugin;
+import io.javalin.openapi.plugin.redoc.ReDocPlugin;
+import io.javalin.openapi.plugin.swagger.SwaggerPlugin;
 import sales.SalesController;
+import sales.SalesDAO;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class REServer {
-        public static void main(String[] args) {
+    public static void main(String[] args) {
 
-            // in memory test data store
-            var sales = new SalesDAO();
+        var sales = new SalesDAO();
+        var salesHandler = new SalesController(sales);
 
-            // API implementation
-            SalesController salesHandler = new SalesController(sales);
+        Javalin.create(config -> {
+            config.registerPlugin(new OpenApiPlugin(pluginConfig -> {
+                pluginConfig.withDefinitionConfiguration((version, definition) -> {
+                    definition.withOpenApiInfo(info -> info.setTitle("Real Estate API"));
+                });
+            }));
+            config.registerPlugin(new SwaggerPlugin());
+            config.registerPlugin(new ReDocPlugin());
 
-            // start Javalin on port 7070
-            var app = Javalin.create()
-                    .get("/", ctx -> ctx.result("Real Estate server is running"))
-                    .start(7070);
-
-            // configure endpoint handlers to process HTTP requests
-            JavalinConfig config = new JavalinConfig();
             config.router.apiBuilder(() -> {
-                // Sales records are immutable hence no PUT and DELETE
-
-                // return a sale by sale ID
-                app.get("/sales/{saleID}", ctx -> {
-                    salesHandler.getSaleByID(ctx, ctx.pathParam("saleID"));
-                });
-                // get all sales records - could be big!
-                app.get("/sales", ctx -> {
-                    salesHandler.getAllSales(ctx);
-                });
-                // create a new sales record
-                app.post("/sales", ctx -> {
-                    salesHandler.createSale(ctx);
-                });
-                // Get all sales for a specified postcode
-                app.get("/sales/postcode/{postcode}", ctx -> {
-                    salesHandler.findSaleByPostCode(ctx, ctx.pathParam("postcode"));
-                });
-                app.get("/sales/price_per_square_meter/average", ctx -> {
-                    salesHandler.averagePricePerSquareMeter(ctx);
-                });
-                app.get("/sales/price_per_square_meter/high", ctx -> {
-                    salesHandler.highPricePerSquareMeter(ctx);
-                });
-                app.get("/sales/price_per_square_meter/low", ctx -> {
-                    salesHandler.lowPricePerSquareMeter(ctx);
-                });
+                get("/", ctx -> ctx.result("Real Estate server is running"));
+                get("/sales/{saleID}", ctx -> salesHandler.getSaleByID(ctx, ctx.pathParam("saleID")));
+                get("/sales", ctx -> salesHandler.getAllSales(ctx));
+                post("/sales", ctx -> salesHandler.createSale(ctx));
+                get("/sales/postcode/{postcode}", ctx -> salesHandler.findSaleByPostCode(ctx, ctx.pathParam("postcode")));
+                get("/sales/price_per_square_meter/average", ctx -> salesHandler.averagePricePerSquareMeter(ctx));
+                get("/sales/price_per_square_meter/high", ctx -> salesHandler.highPricePerSquareMeter(ctx));
+                get("/sales/price_per_square_meter/low", ctx -> salesHandler.lowPricePerSquareMeter(ctx));
             });
-        }
+        }).start(7070);
+
+        System.out.println("Swagger UI: http://localhost:7070/swagger-ui");
+        System.out.println("ReDoc:      http://localhost:7070/redoc");
+    }
 }
-
-
