@@ -27,12 +27,12 @@ public class REServer {
             config.router.apiBuilder(() -> {
                 get("/", ctx -> ctx.result("Real Estate server is running"));
                 get("/sales/{saleID}", ctx -> salesHandler.getSaleByID(ctx, ctx.pathParam("saleID")));
-                get("/sales", ctx -> salesHandler.getAllSales(ctx));
-                post("/sales", ctx -> salesHandler.createSale(ctx));
+                get("/sales", salesHandler::getAllSales);
+                post("/sales", salesHandler::createSale);
                 get("/sales/postcode/{postcode}", ctx -> salesHandler.findSaleByPostCode(ctx, ctx.pathParam("postcode")));
-                get("/sales/price_per_square_meter/average", ctx -> salesHandler.averagePricePerSquareMeter(ctx));
-                get("/sales/price_per_square_meter/high", ctx -> salesHandler.highPricePerSquareMeter(ctx));
-                get("/sales/price_per_square_meter/low", ctx -> salesHandler.lowPricePerSquareMeter(ctx));
+                get("/sales/price_per_square_meter/average", salesHandler::averagePricePerSquareMeter);
+                get("/sales/price_per_square_meter/high", salesHandler::highPricePerSquareMeter);
+                get("/sales/price_per_square_meter/low", salesHandler::lowPricePerSquareMeter);
             });
         }).start(7070);
     }

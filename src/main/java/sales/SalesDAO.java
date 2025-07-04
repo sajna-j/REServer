@@ -141,7 +141,9 @@ public class SalesDAO {
         HomeSale homeSale = new HomeSale();
 
         homeSale.setPropertyId(set.getLong("property_id"));
-        if (set.wasNull()) homeSale.setPropertyId(null);  // Handle possible NULL
+        if (set.wasNull()) {
+            homeSale.setPropertyId(null);  // Handle possible NULL
+        }
 
         homeSale.setCouncilName(set.getString("council_name"));
         homeSale.setAddress(set.getString("address"));
