@@ -1,14 +1,15 @@
 package sales;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-
-import org.bson.Document;
-
+import com.mongodb.client.MongoDatabase;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.bson.Document;
 
 public class SalesDAO {
 
@@ -17,32 +18,34 @@ public class SalesDAO {
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = null;
 
-    public boolean newSale(HomeSale homeSale) throws SQLException {
-        String sql = "INSERT INTO property_data (property_id, council_name, address, post_code, property_type, strata_lot_number, primary_purpose, zoning, property_name, legal_description, area_type, nature_of_property, area, purchase_price, download_date, contract_date, settlement_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public boolean newSale(HomeSale homeSale) {
+        try (MongoClient mongoClient = MongoClients.create(JDBC_URL)) {
+            MongoDatabase database = mongoClient.getDatabase("homesale");
+            MongoCollection<Document> collection = database.getCollection("sales");
 
-            stmt.setLong(1, homeSale.getPropertyId());
-            stmt.setString(2, homeSale.getCouncilName());
-            stmt.setString(3, homeSale.getAddress());
-            stmt.setString(4, homeSale.getPostCode());
-            stmt.setString(5, homeSale.getPropertyType());
-            stmt.setString(6, homeSale.getStrataLotNumber());
-            stmt.setString(7, homeSale.getPrimaryPurpose());
-            stmt.setString(8, homeSale.getZoning());
-            stmt.setString(9, homeSale.getPropertyName());
-            stmt.setString(10, homeSale.getLegalDescription());
-            stmt.setString(11, homeSale.getAreaType());
-            stmt.setString(12, homeSale.getNatureOfProperty());
-            stmt.setBigDecimal(13, homeSale.getArea());
-            stmt.setBigDecimal(14, homeSale.getPurchasePrice());
-            stmt.setDate(15, Date.valueOf(homeSale.getDownloadDate()));
-            stmt.setDate(16, Date.valueOf(homeSale.getContractDate()));
-            stmt.setDate(17, Date.valueOf(homeSale.getSettlementDate()));
+            Document saleDoc = new Document("property_id", homeSale.getPropertyId())
+                    .append("council_name", homeSale.getCouncilName())
+                    .append("address", homeSale.getAddress())
+                    .append("post_code", homeSale.getPostCode())
+                    .append("property_type", homeSale.getPropertyType())
+                    .append("strata_lot_number", homeSale.getStrataLotNumber())
+                    .append("primary_purpose", homeSale.getPrimaryPurpose())
+                    .append("zoning", homeSale.getZoning())
+                    .append("property_name", homeSale.getPropertyName())
+                    .append("legal_description", homeSale.getLegalDescription())
+                    .append("area_type", homeSale.getAreaType())
+                    .append("nature_of_property", homeSale.getNatureOfProperty())
+                    .append("area", homeSale.getArea())
+                    .append("purchase_price", homeSale.getPurchasePrice())
+                    .append("download_date", homeSale.getDownloadDate())
+                    .append("contract_date", homeSale.getContractDate())
+                    .append("settlement_date", homeSale.getSettlementDate());
 
-            stmt.executeUpdate();
+            collection.insertOne(saleDoc);
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
