@@ -43,31 +43,20 @@ public class SalesDAO {
     }
 
     public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
-        String query = "SELECT * FROM property_data WHERE property_id = ?";
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, saleID);
-            ResultSet set = stmt.executeQuery();
-            if (set.next()) {
-                return Optional.of(createHomeSale(set));
-            }
+        String selectQuery = "SELECT * FROM property_data WHERE property_id = ?";
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+            updateAnalytics(conn, "property_id_analytics", "property_id", saleID);
+            List<HomeSale> sales = selectHomeSales(conn, selectQuery, saleID);
+            return sales.isEmpty() ? Optional.empty() : Optional.of(sales.get(0));
         }
-        return Optional.empty();
     }
 
-    // returns a List of homesales  in a given postCode
     public List<HomeSale> getSalesByPostCode(String postCode) throws SQLException {
-        String query = "SELECT * FROM property_data WHERE post_code = ?";
-        List<HomeSale> sales = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, postCode);
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                sales.add(createHomeSale(set));
-            }
+        String selectQuery = "SELECT * FROM property_data WHERE post_code = ?";
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+            updateAnalytics(conn, "post_code_analytics", "post_code", postCode);
+            return selectHomeSales(conn, selectQuery, postCode);
         }
-        return sales;
     }
 
     // returns the individual prices for all sales. Potentially large
@@ -135,6 +124,27 @@ public class SalesDAO {
             }
         }
         return pairs;
+    }
+
+    private void updateAnalytics(Connection conn, String table, String keyName, String keyValue) throws SQLException {
+        String query = String.format("INSERT INTO %s (%s, access_count) VALUES (?, 1) ON DUPLICATE KEY UPDATE access_count = access_count + 1", table, keyName);
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, keyValue);
+            stmt.executeUpdate();
+        }
+    }
+
+    private List<HomeSale> selectHomeSales(Connection conn, String query, String param) throws SQLException {
+        List<HomeSale> sales = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, param);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    sales.add(createHomeSale(rs));
+                }
+            }
+        }
+        return sales;
     }
 
     private HomeSale createHomeSale(ResultSet set) throws SQLException {
