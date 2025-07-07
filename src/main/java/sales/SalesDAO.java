@@ -1,5 +1,9 @@
 package sales;
 
+import com.mongodb.client.MongoCollection;
+
+import org.bson.Document;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +13,7 @@ import java.util.Optional;
 public class SalesDAO {
 
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/properties";
+    private static final String JDBC_URL = "mongodb+srv://vspillai02:cs4530exercise1@cs4530exercise1.a7aa12o.mongodb.net/?retryWrites=true&w=majority&appName=cs4530exercise1";
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = null;
 
