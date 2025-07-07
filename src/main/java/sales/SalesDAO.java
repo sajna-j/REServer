@@ -1,5 +1,6 @@
 package sales;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -18,11 +19,16 @@ public class SalesDAO {
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = null;
 
-    public boolean newSale(HomeSale homeSale) {
-        try (MongoClient mongoClient = MongoClients.create(JDBC_URL)) {
-            MongoDatabase database = mongoClient.getDatabase("homesale");
-            MongoCollection<Document> collection = database.getCollection("sales");
+    private final MongoCollection<Document> collection;
 
+    public SalesDAO() throws MongoException {
+        MongoClient mongoClient = MongoClients.create(JDBC_URL);
+        MongoDatabase database = mongoClient.getDatabase("homesale");
+        collection = database.getCollection("sales");
+    }
+
+    public boolean newSale(HomeSale homeSale) {
+        try {
             Document saleDoc = new Document("property_id", homeSale.getPropertyId())
                     .append("council_name", homeSale.getCouncilName())
                     .append("address", homeSale.getAddress())
