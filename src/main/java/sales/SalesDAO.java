@@ -108,14 +108,10 @@ public class SalesDAO {
     }
 
     public List<PricePerPostCode> getAveragePrice() throws SQLException {
-        String query = getPricePerQuery("AVG");
         List<PricePerPostCode> pairs = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                pairs.add(createPricePer(set));
-            }
+        for (Document document : collection.find()) {
+            PricePerPostCode pair = createPricePer(document);
+            pairs.add(pair);
         }
         return pairs;
     }
@@ -146,10 +142,10 @@ public class SalesDAO {
         return pairs;
     }
 
-    private PricePerPostCode createPricePer(ResultSet set) throws SQLException {
+    private PricePerPostCode createPricePer(Document doc) throws MongoException {
         PricePerPostCode pricePerPostCode = new PricePerPostCode();
-        pricePerPostCode.setPostCode(set.getInt("post_code"));
-        pricePerPostCode.setPricePerSquareMeter(set.getDouble("price_per_unit"));
+        pricePerPostCode.setPostCode(doc.getInteger("post_code"));
+        pricePerPostCode.setPricePerSquareMeter(doc.getDouble("price_per_unit"));
         return pricePerPostCode;
     }
 
