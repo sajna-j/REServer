@@ -10,10 +10,6 @@
     </parent>
 
     <artifactId>APIGateway</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>PropertyServer</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
