@@ -96,14 +96,12 @@ public class SalesDAO {
     }
 
     // returns all home sales. Potentially large
-    public List<HomeSale> getAllSales() throws SQLException {
-        String query = "SELECT * FROM property_data LIMIT 1000";
+    public List<HomeSale> getAllSales() throws MongoException {
         List<HomeSale> sales = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                sales.add(createHomeSale(set));
+        for (Document document : collection.find()) {
+            HomeSale homeSale = fromDocument(document);
+            if (homeSale != null) {
+                sales.add(homeSale);
             }
         }
         return sales;
@@ -148,42 +146,6 @@ public class SalesDAO {
         return pairs;
     }
 
-    @Deprecated
-    private HomeSale createHomeSale(ResultSet set) throws SQLException {
-        HomeSale homeSale = new HomeSale();
-
-        homeSale.setPropertyId(set.getLong("property_id"));
-        if (set.wasNull()) {
-            homeSale.setPropertyId(null);  // Handle possible NULL
-        }
-
-        homeSale.setCouncilName(set.getString("council_name"));
-        homeSale.setAddress(set.getString("address"));
-        homeSale.setPostCode(set.getString("post_code"));
-        homeSale.setPropertyType(set.getString("property_type"));
-        homeSale.setStrataLotNumber(set.getString("strata_lot_number"));
-        homeSale.setPrimaryPurpose(set.getString("primary_purpose"));
-        homeSale.setZoning(set.getString("zoning"));
-        homeSale.setPropertyName(set.getString("property_name"));
-        homeSale.setLegalDescription(set.getString("legal_description"));
-        homeSale.setAreaType(set.getString("area_type"));
-        homeSale.setNatureOfProperty(set.getString("nature_of_property"));
-
-        homeSale.setArea(set.getBigDecimal("area"));
-        homeSale.setPurchasePrice(set.getBigDecimal("purchase_price"));
-
-        Date downloadDate = set.getDate("download_date");
-        homeSale.setDownloadDate(downloadDate != null ? downloadDate.toLocalDate() : null);
-
-        Date contractDate = set.getDate("contract_date");
-        homeSale.setContractDate(contractDate != null ? contractDate.toLocalDate() : null);
-
-        Date settlementDate = set.getDate("settlement_date");
-        homeSale.setSettlementDate(settlementDate != null ? settlementDate.toLocalDate() : null);
-
-        return homeSale;
-    }
-
     private PricePerPostCode createPricePer(ResultSet set) throws SQLException {
         PricePerPostCode pricePerPostCode = new PricePerPostCode();
         pricePerPostCode.setPostCode(set.getInt("post_code"));
@@ -224,6 +186,7 @@ public class SalesDAO {
 
     private static BigDecimal toBigDecimal(Document doc, String key) {
         Object value = doc.get(key);
+        if (value == null || value.equals("")) return BigDecimal.valueOf(0);
         if (value instanceof BigDecimal) return (BigDecimal) value;
         if (value instanceof Number) return BigDecimal.valueOf(((Number) value).doubleValue());
         if (value instanceof String) return new BigDecimal((String) value);

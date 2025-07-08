@@ -76,7 +76,7 @@ public class SalesController {
       List <HomeSale> allSales = new ArrayList<>();
       try {
         allSales = homeSales.getAllSales();
-      } catch (SQLException e) {
+      } catch (MongoException e) {
           ctx.result("Database error: " + e.getMessage());
           ctx.status(500);
       }
