@@ -63,7 +63,7 @@ public class SalesDAO {
         }
     }
 
-    public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
+    public Optional<HomeSale> getSaleById(String saleID) throws MongoException {
         Document document = collection.find(Filters.eq("property_id", Long.parseLong(saleID))).first();
         collection.updateOne(Filters.eq("property_id", Long.parseLong(saleID)), Updates.inc("property_accessed_count", 1));
         return Optional.ofNullable(fromDocument(document));
