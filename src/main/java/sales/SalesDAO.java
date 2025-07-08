@@ -51,7 +51,9 @@ public class SalesDAO {
                     .append("purchase_price", homeSale.getPurchasePrice())
                     .append("download_date", homeSale.getDownloadDate())
                     .append("contract_date", homeSale.getContractDate())
-                    .append("settlement_date", homeSale.getSettlementDate());
+                    .append("settlement_date", homeSale.getSettlementDate())
+                    .append("property_accessed_count", homeSale.getPropertyAccessedCount())
+                    .append("post_code_accessed_count", homeSale.getPostCodeAccessedCount());
 
             collection.insertOne(saleDoc);
             return true;
@@ -230,7 +232,9 @@ public class SalesDAO {
                 toBigDecimal(doc, "purchase_price"),
                 toLocalDate(doc, "download_date"),
                 toLocalDate(doc, "contract_date"),
-                toLocalDate(doc, "settlement_date")
+                toLocalDate(doc, "settlement_date"),
+                doc.getInteger("property_accessed_count"),
+                doc.getInteger("post_code_accessed_count")
         );
     }
 
