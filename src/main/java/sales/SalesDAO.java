@@ -78,6 +78,7 @@ public class SalesDAO {
                 sales.add(homeSale);
             }
         }
+        collection.updateMany(Filters.eq("post_code", Long.parseLong(postCode)), Updates.inc("post_code_accessed_count", 1));
         return sales;
     }
 
@@ -146,27 +147,6 @@ public class SalesDAO {
             }
         }
         return pairs;
-    }
-
-    private void updateAnalytics(Connection conn, String table, String keyName, String keyValue) throws SQLException {
-        String query = String.format("INSERT INTO %s (%s, access_count) VALUES (?, 1) ON DUPLICATE KEY UPDATE access_count = access_count + 1", table, keyName);
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, keyValue);
-            stmt.executeUpdate();
-        }
-    }
-
-    private List<HomeSale> selectHomeSales(Connection conn, String query, String param) throws SQLException {
-        List<HomeSale> sales = new ArrayList<>();
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, param);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    sales.add(createHomeSale(rs));
-                }
-            }
-        }
-        return sales;
     }
 
     @Deprecated
