@@ -5,8 +5,13 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,12 +61,8 @@ public class SalesDAO {
     }
 
     public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
-        String selectQuery = "SELECT * FROM property_data WHERE property_id = ?";
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            updateAnalytics(conn, "property_id_analytics", "property_id", saleID);
-            List<HomeSale> sales = selectHomeSales(conn, selectQuery, saleID);
-            return sales.isEmpty() ? Optional.empty() : Optional.of(sales.get(0));
-        }
+        Document document = collection.find(Filters.eq("property_id", saleID)).first();
+        return Optional.ofNullable(fromDocument(document));
     }
 
     public List<HomeSale> getSalesByPostCode(String postCode) throws SQLException {
@@ -160,6 +161,7 @@ public class SalesDAO {
         return sales;
     }
 
+    @Deprecated
     private HomeSale createHomeSale(ResultSet set) throws SQLException {
         HomeSale homeSale = new HomeSale();
 
@@ -206,4 +208,45 @@ public class SalesDAO {
         return "SELECT post_code, ROUND(" + op + "(purchase_price / CASE WHEN area_type = 'H' THEN area * 10000 ELSE area END), 2) AS price_per_unit FROM property_data WHERE area IS NOT NULL AND post_code IS NOT NULL AND post_code >= 2000 AND area_type IS NOT NULL GROUP BY post_code;";
     }
 
+    public static HomeSale fromDocument(Document doc) {
+        if (doc == null) return null;
+
+        return new HomeSale(
+                doc.getLong("property_id"),
+                doc.getString("council_name"),
+                doc.getString("address"),
+                doc.getString("post_code"),
+                doc.getString("property_type"),
+                doc.getString("strata_lot_number"),
+                doc.getString("primary_purpose"),
+                doc.getString("zoning"),
+                doc.getString("property_name"),
+                doc.getString("legal_description"),
+                doc.getString("area_type"),
+                doc.getString("nature_of_property"),
+                toBigDecimal(doc, "area"),
+                toBigDecimal(doc, "purchase_price"),
+                toLocalDate(doc, "download_date"),
+                toLocalDate(doc, "contract_date"),
+                toLocalDate(doc, "settlement_date")
+        );
+    }
+
+    private static BigDecimal toBigDecimal(Document doc, String key) {
+        Object value = doc.get(key);
+        if (value instanceof BigDecimal) return (BigDecimal) value;
+        if (value instanceof Number) return BigDecimal.valueOf(((Number) value).doubleValue());
+        if (value instanceof String) return new BigDecimal((String) value);
+        return null;
+    }
+
+    private static LocalDate toLocalDate(Document doc, String key) {
+        Object value = doc.get(key);
+        if (value instanceof java.util.Date) {
+            return Instant.ofEpochMilli(((java.util.Date) value).getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+        }
+        return null;
+    }
 }
