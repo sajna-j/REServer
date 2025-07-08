@@ -3,7 +3,13 @@
     <groupId>neu.cs.doc.cs4530</groupId>
     <artifactId>REServer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>untitled1</module>
+        <module>APIGateway</module>
+        <module>AnalyticsServer</module>
+        <module>PropertyServer</module>
+    </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
