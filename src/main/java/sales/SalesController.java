@@ -195,7 +195,7 @@ public class SalesController {
     List<PricePerPostCode> allPairs = new ArrayList<>();
     try {
       allPairs = homeSales.getHighPrice();
-    } catch (SQLException e) {
+    } catch (MongoException e) {
       ctx.result("Database error: " + e.getMessage());
       ctx.status(500);
     }
@@ -224,7 +224,7 @@ public class SalesController {
     List<PricePerPostCode> allPairs = new ArrayList<>();
     try {
       allPairs = homeSales.getLowPrice();
-    } catch (SQLException e) {
+    } catch (MongoException e) {
       ctx.result("Database error: " + e.getMessage());
       ctx.status(500);
     }

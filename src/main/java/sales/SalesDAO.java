@@ -14,7 +14,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.bson.Document;
 
@@ -107,39 +110,26 @@ public class SalesDAO {
         return sales;
     }
 
-    public List<PricePerPostCode> getAveragePrice() throws SQLException {
+    private List<PricePerPostCode> getPrice(String op) throws MongoException {
         List<PricePerPostCode> pairs = new ArrayList<>();
         for (Document document : collection.find()) {
             PricePerPostCode pair = createPricePer(document);
             pairs.add(pair);
         }
+        pairs = coalesce(pairs, op);
         return pairs;
     }
 
-    public List<PricePerPostCode> getHighPrice() throws SQLException {
-        String query = getPricePerQuery("MAX");
-        List<PricePerPostCode> pairs = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                pairs.add(createPricePer(null));
-            }
-        }
-        return pairs;
+    public List<PricePerPostCode> getAveragePrice() throws SQLException {
+        return getPrice("AVG");
     }
 
-    public List<PricePerPostCode> getLowPrice() throws SQLException {
-        String query = getPricePerQuery("MIN");
-        List<PricePerPostCode> pairs = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                pairs.add(createPricePer(null));
-            }
-        }
-        return pairs;
+    public List<PricePerPostCode> getHighPrice() throws MongoException {
+        return getPrice("MAX");
+    }
+
+    public List<PricePerPostCode> getLowPrice() throws MongoException {
+        return getPrice("MIN");
     }
 
     private PricePerPostCode createPricePer(Document doc) throws MongoException {
@@ -171,8 +161,42 @@ public class SalesDAO {
         return pricePerUnit;
     }
 
-    private String getPricePerQuery(String op) {
-        return "SELECT post_code, ROUND(" + op + "(purchase_price / CASE WHEN area_type = 'H' THEN area * 10000 ELSE area END), 2) AS price_per_unit FROM property_data WHERE area IS NOT NULL AND post_code IS NOT NULL AND post_code >= 2000 AND area_type IS NOT NULL GROUP BY post_code;";
+    private static List<PricePerPostCode> coalesce(List<PricePerPostCode> pairs, String op) {
+        Map<String, List<Double>> hash = new HashMap<>();
+        List<PricePerPostCode> returnValue = new ArrayList<>();
+
+        for (PricePerPostCode pair : pairs) {
+            String postCode = pair.getPostCode();
+            double pricePer = pair.getPricePerSquareMeter();
+
+            if (hash.containsKey(postCode)) {
+                List<Double> newList = hash.get(postCode);
+                newList.add(pricePer);
+                hash.put(postCode, newList);
+            }
+            else {
+                hash.put(postCode, new ArrayList<>(List.of(pricePer)));
+            }
+        }
+
+
+        for (String key : hash.keySet()) {
+            double operated;
+
+            if (op.equals("MIN")) {
+                operated = hash.get(key).stream().mapToDouble(Double::doubleValue).min().orElse(0.0);
+            }
+            else if (op.equals("MAX")) {
+                operated = hash.get(key).stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+            }
+            else {
+                operated = hash.get(key).stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+            }
+
+            returnValue.add(new PricePerPostCode(key, operated));
+        }
+
+        return returnValue;
     }
 
     public static HomeSale fromDocument(Document doc) {
