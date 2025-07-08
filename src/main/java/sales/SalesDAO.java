@@ -216,31 +216,6 @@ public class SalesDAO {
         return "SELECT post_code, ROUND(" + op + "(purchase_price / CASE WHEN area_type = 'H' THEN area * 10000 ELSE area END), 2) AS price_per_unit FROM property_data WHERE area IS NOT NULL AND post_code IS NOT NULL AND post_code >= 2000 AND area_type IS NOT NULL GROUP BY post_code;";
     }
 
-//    public static HomeSale fromDocument(Document doc) {
-//        if (doc == null) return null;
-//
-//        return new HomeSale(
-//                doc.getDouble("property_id").longValue(),
-//                doc.getString("council_name"),
-//                doc.getString("address"),
-//                //doc.getDouble("post_code").toString(),
-//                String.valueOf(doc.get("post_code")),
-//                doc.getString("property_type"),
-//                doc.getString("strata_lot_number"),
-//                doc.getString("primary_purpose"),
-//                doc.getString("zoning"),
-//                doc.getString("property_name"),
-//                doc.getString("legal_description"),
-//                doc.getString("area_type"),
-//                doc.getString("nature_of_property"),
-//                toBigDecimal(doc, "area"),
-//                toBigDecimal(doc, "purchase_price"),
-//                toLocalDate(doc, "download_date"),
-//                toLocalDate(doc, "contract_date"),
-//                toLocalDate(doc, "settlement_date")
-//        );
-//    }
-
     public static HomeSale fromDocument(Document doc) {
         if (doc == null) return null;
 
