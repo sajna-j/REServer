@@ -61,7 +61,7 @@ public class SalesDAO {
     }
 
     public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
-        Document document = collection.find(Filters.eq("property_id", saleID)).first();
+        Document document = collection.find(Filters.eq("property_id", Long.parseLong(saleID))).first();
         return Optional.ofNullable(fromDocument(document));
     }
 
@@ -212,10 +212,10 @@ public class SalesDAO {
         if (doc == null) return null;
 
         return new HomeSale(
-                doc.getLong("property_id"),
+                doc.getDouble("property_id").longValue(),
                 doc.getString("council_name"),
                 doc.getString("address"),
-                doc.getString("post_code"),
+                doc.getDouble("post_code").toString(),
                 doc.getString("property_type"),
                 doc.getString("strata_lot_number"),
                 doc.getString("primary_purpose"),
