@@ -70,11 +70,10 @@ public class SalesDAO {
     }
 
     public List<HomeSale> getSalesByPostCode(String postCode) throws MongoException {
-        List<HomeSale> sales = new ArrayList<HomeSale>();
+        List<HomeSale> sales = new ArrayList<>();
         for (Document document : collection.find(Filters.eq("post_code", Long.parseLong(postCode)))) {
             HomeSale homeSale = fromDocument(document);
             if (homeSale != null) {
-                //System.out.println("Area: " + homeSale.getArea());
                 sales.add(homeSale);
             }
         }
