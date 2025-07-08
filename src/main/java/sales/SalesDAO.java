@@ -84,20 +84,6 @@ public class SalesDAO {
         return sales;
     }
 
-    // returns the individual prices for all sales. Potentially large
-    public List<BigDecimal> getAllSalePrices() throws SQLException {
-        String query = "SELECT purchase_price FROM property_data";
-        List<BigDecimal> prices = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet set = stmt.executeQuery();
-            while (set.next()) {
-                prices.add(set.getBigDecimal("purchase_price"));
-            }
-        }
-        return prices;
-    }
-
     // returns all home sales. Potentially large
     public List<HomeSale> getAllSales() throws MongoException {
         List<HomeSale> sales = new ArrayList<>();
