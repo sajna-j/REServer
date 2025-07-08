@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -50,7 +51,9 @@ public class SalesDAO {
                     .append("purchase_price", homeSale.getPurchasePrice())
                     .append("download_date", homeSale.getDownloadDate())
                     .append("contract_date", homeSale.getContractDate())
-                    .append("settlement_date", homeSale.getSettlementDate());
+                    .append("settlement_date", homeSale.getSettlementDate())
+                    .append("property_accessed_count", homeSale.getPropertyAccessedCount())
+                    .append("post_code_accessed_count", homeSale.getPostCodeAccessedCount());
 
             collection.insertOne(saleDoc);
             return true;
@@ -60,8 +63,9 @@ public class SalesDAO {
         }
     }
 
-    public Optional<HomeSale> getSaleById(String saleID) throws SQLException {
+    public Optional<HomeSale> getSaleById(String saleID) throws MongoException {
         Document document = collection.find(Filters.eq("property_id", Long.parseLong(saleID))).first();
+        collection.updateOne(Filters.eq("property_id", Long.parseLong(saleID)), Updates.inc("property_accessed_count", 1));
         return Optional.ofNullable(fromDocument(document));
     }
 
@@ -257,7 +261,9 @@ public class SalesDAO {
                 toBigDecimal(doc, "purchase_price"),
                 toLocalDate(doc, "download_date"),
                 toLocalDate(doc, "contract_date"),
-                toLocalDate(doc, "settlement_date")
+                toLocalDate(doc, "settlement_date"),
+                doc.getInteger("property_accessed_count"),
+                doc.getInteger("post_code_accessed_count")
         );
     }
 

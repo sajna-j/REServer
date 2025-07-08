@@ -21,6 +21,8 @@ public class HomeSale {
     private LocalDate downloadDate;
     private LocalDate contractDate;
     private LocalDate settlementDate;
+    private int propertyAccessedCount;
+    private int postCodeAccessedCount;
 
     // No-args constructor
     public HomeSale() {
@@ -32,7 +34,8 @@ public class HomeSale {
                     String zoning, String propertyName, String legalDescription,
                     String areaType, String natureOfProperty, BigDecimal area,
                     BigDecimal purchasePrice, LocalDate downloadDate,
-                    LocalDate contractDate, LocalDate settlementDate) {
+                    LocalDate contractDate, LocalDate settlementDate,
+                    int propertyAccessedCount, int postCodeAccessedCount) {
         this.propertyId = propertyId;
         this.councilName = councilName;
         this.address = address;
@@ -50,6 +53,8 @@ public class HomeSale {
         this.downloadDate = downloadDate;
         this.contractDate = contractDate;
         this.settlementDate = settlementDate;
+        this.propertyAccessedCount = propertyAccessedCount;
+        this.postCodeAccessedCount = postCodeAccessedCount;
     }
 
     public Long getPropertyId() {
@@ -186,5 +191,21 @@ public class HomeSale {
 
     public void setSettlementDate(LocalDate settlementDate) {
         this.settlementDate = settlementDate;
+    }
+
+    public int getPropertyAccessedCount() {
+        return propertyAccessedCount;
+    }
+
+    public void setPropertyAccessedCount(int propertyAccessedCount) {
+        this.propertyAccessedCount = propertyAccessedCount;
+    }
+
+    public int getPostCodeAccessedCount() {
+        return postCodeAccessedCount;
+    }
+
+    public void setPostCodeAccessedCount(int postCodeAccessedCount) {
+        this.postCodeAccessedCount = postCodeAccessedCount;
     }
 }

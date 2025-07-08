@@ -109,7 +109,7 @@ public class SalesController {
       Optional<HomeSale> sale = Optional.empty();
       try {
         sale = homeSales.getSaleById(id);
-      } catch (SQLException e) {
+      } catch (MongoException e) {
           ctx.result("Database error: " + e.getMessage());
           ctx.status(500);
       }
