@@ -137,7 +137,7 @@ public class SalesController {
       List<HomeSale> sales = new ArrayList<>();
       try {
         sales = homeSales.getSalesByPostCode(postCode);
-      } catch (SQLException e) {
+      } catch (MongoException e) {
           ctx.result("Database error: " + e.getMessage());
           ctx.status(500);
       }

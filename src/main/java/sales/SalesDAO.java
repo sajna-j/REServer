@@ -65,12 +65,16 @@ public class SalesDAO {
         return Optional.ofNullable(fromDocument(document));
     }
 
-    public List<HomeSale> getSalesByPostCode(String postCode) throws SQLException {
-        String selectQuery = "SELECT * FROM property_data WHERE post_code = ?";
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
-            updateAnalytics(conn, "post_code_analytics", "post_code", postCode);
-            return selectHomeSales(conn, selectQuery, postCode);
+    public List<HomeSale> getSalesByPostCode(String postCode) throws MongoException {
+        List<HomeSale> sales = new ArrayList<HomeSale>();
+        for (Document document : collection.find(Filters.eq("post_code", Long.parseLong(postCode)))) {
+            HomeSale homeSale = fromDocument(document);
+            if (homeSale != null) {
+                //System.out.println("Area: " + homeSale.getArea());
+                sales.add(homeSale);
+            }
         }
+        return sales;
     }
 
     // returns the individual prices for all sales. Potentially large
