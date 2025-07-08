@@ -2,22 +2,22 @@ package sales;
 
 public class PricePerPostCode {
 
-  private int postCode;
+  private String postCode;
   private double pricePerSquareMeter;
 
   public PricePerPostCode() {
   }
 
-  public PricePerPostCode(int postCode, double pricePerSquareMeter) {
+  public PricePerPostCode(String postCode, double pricePerSquareMeter) {
     this.postCode = postCode;
     this.pricePerSquareMeter = pricePerSquareMeter;
   }
 
-  public int getPostCode() {
+  public String getPostCode() {
     return postCode;
   }
 
-  public void setPostCode(int postCode) {
+  public void setPostCode(String postCode) {
     this.postCode = postCode;
   }
 

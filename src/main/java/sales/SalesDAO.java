@@ -123,7 +123,7 @@ public class SalesDAO {
              PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet set = stmt.executeQuery();
             while (set.next()) {
-                pairs.add(createPricePer(set));
+                pairs.add(createPricePer(null));
             }
         }
         return pairs;
@@ -136,7 +136,7 @@ public class SalesDAO {
              PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet set = stmt.executeQuery();
             while (set.next()) {
-                pairs.add(createPricePer(set));
+                pairs.add(createPricePer(null));
             }
         }
         return pairs;
@@ -144,8 +144,8 @@ public class SalesDAO {
 
     private PricePerPostCode createPricePer(Document doc) throws MongoException {
         PricePerPostCode pricePerPostCode = new PricePerPostCode();
-        pricePerPostCode.setPostCode(doc.getInteger("post_code"));
-        pricePerPostCode.setPricePerSquareMeter(doc.getDouble("price_per_unit"));
+        pricePerPostCode.setPostCode(String.valueOf(doc.get("post_code")));
+        pricePerPostCode.setPricePerSquareMeter(0);
         return pricePerPostCode;
     }
 
