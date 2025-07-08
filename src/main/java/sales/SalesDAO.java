@@ -161,7 +161,7 @@ public class SalesDAO {
         if (doc == null) return null;
 
         return new HomeSale(
-                doc.getDouble("property_id").longValue(),
+                doc.get("property_id") instanceof Number ? ((Number) doc.get("property_id")).longValue() : 0,
                 String.valueOf(doc.get("council_name")),
                 String.valueOf(doc.get("address")),
                 String.valueOf(doc.get("post_code")),
