@@ -145,8 +145,30 @@ public class SalesDAO {
     private PricePerPostCode createPricePer(Document doc) throws MongoException {
         PricePerPostCode pricePerPostCode = new PricePerPostCode();
         pricePerPostCode.setPostCode(String.valueOf(doc.get("post_code")));
-        pricePerPostCode.setPricePerSquareMeter(0);
+        pricePerPostCode.setPricePerSquareMeter(getPricePerSquareMeter(doc));
         return pricePerPostCode;
+    }
+
+    private double getPricePerSquareMeter(Document doc) {
+        String areaObject = String.valueOf(doc.get("area"));
+        double area;
+        try {
+            area = Double.parseDouble(areaObject);
+        }
+        catch (Exception e) {
+            area = 0;
+        }
+        double purchasePrice = Double.parseDouble(doc.get("purchase_price").toString());
+        String areaType = doc.getString("area_type");
+
+        double effectiveArea = "H".equals(areaType) ? area * 10000 : area;
+        double pricePerUnit = 0.0;
+
+        if (effectiveArea != 0) {
+            double rawValue = purchasePrice / effectiveArea;
+            pricePerUnit = Math.round(rawValue * 100.0) / 100.0;
+        }
+        return pricePerUnit;
     }
 
     private String getPricePerQuery(String op) {
