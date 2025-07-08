@@ -1,5 +1,7 @@
 package sales;
 
+import com.mongodb.MongoException;
+
 import io.javalin.http.Context;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
@@ -52,7 +54,7 @@ public class SalesController {
             ctx.result("Failed to add sale");
             ctx.status(400);
         }
-      } catch (SQLException e) {
+      } catch (MongoException e) {
           ctx.result("Database error: " + e.getMessage());
           ctx.status(500);
       }
