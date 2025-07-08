@@ -24,8 +24,6 @@ public class SalesDAO {
 
 
     private static final String JDBC_URL = "mongodb+srv://vspillai02:cs4530exercise1@cs4530exercise1b.a7aa12o.mongodb.net/?retryWrites=true&w=majority&appName=cs4530exercise1";
-    private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = null;
 
     private final MongoCollection<Document> collection;
 
