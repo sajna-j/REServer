@@ -9,7 +9,7 @@ import sales.SalesDAO;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-public class REServer {
+public class PropertyServer {
     public static void main(String[] args) {
 
         var sales = new SalesDAO();
