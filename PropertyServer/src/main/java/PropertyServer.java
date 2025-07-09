@@ -1,11 +1,7 @@
-package app;
-
 import io.javalin.Javalin;
 import io.javalin.openapi.plugin.OpenApiPlugin;
 import io.javalin.openapi.plugin.redoc.ReDocPlugin;
 import io.javalin.openapi.plugin.swagger.SwaggerPlugin;
-import sales.SalesController;
-import sales.SalesDAO;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 

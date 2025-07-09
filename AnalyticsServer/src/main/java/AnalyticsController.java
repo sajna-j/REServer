@@ -1,8 +1,5 @@
-package app;
-
 import org.bson.Document;
 
-import analytics.AnalyticsDAO;
 import io.javalin.http.Context;
 
 public class AnalyticsController {

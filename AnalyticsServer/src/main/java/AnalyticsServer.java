@@ -1,6 +1,3 @@
-package app;
-
-import analytics.AnalyticsDAO;
 import io.javalin.Javalin;
 import io.javalin.openapi.plugin.OpenApiPlugin;
 import io.javalin.openapi.plugin.redoc.ReDocPlugin;
@@ -12,7 +9,7 @@ public class AnalyticsServer {
     public static void main(String[] args) {
 
         var sales = new AnalyticsDAO();
-        var analyticsHandler = new app.AnalyticsController(sales);
+        var analyticsHandler = new AnalyticsController(sales);
 
         Javalin.create(config -> {
             config.registerPlugin(new OpenApiPlugin(pluginConfig -> {

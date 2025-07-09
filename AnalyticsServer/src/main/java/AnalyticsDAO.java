@@ -1,5 +1,3 @@
-package analytics;
-
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -11,10 +9,9 @@ import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
 
-import static sales.SalesDAO.JDBC_URL;
-
 public class AnalyticsDAO {
 
+  public static final String JDBC_URL = "mongodb+srv://vspillai02:cs4530exercise1@cs4530exercise1b.a7aa12o.mongodb.net/?retryWrites=true&w=majority&appName=cs4530exercise1";
   private final MongoCollection<Document> collection;
 
   public AnalyticsDAO() throws MongoException {

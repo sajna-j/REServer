@@ -1,5 +1,3 @@
-package app;
-
 import io.javalin.Javalin;
 import static io.javalin.apibuilder.ApiBuilder.*;
 

@@ -1,5 +1,3 @@
-package sales;
-
 import com.mongodb.MongoException;
 
 import io.javalin.http.Context;

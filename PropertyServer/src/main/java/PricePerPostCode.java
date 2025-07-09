@@ -1,5 +1,3 @@
-package sales;
-
 public class PricePerPostCode {
 
   private String postCode;
