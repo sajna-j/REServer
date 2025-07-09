@@ -4,7 +4,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -62,7 +61,6 @@ public class SalesDAO {
 
     public Optional<HomeSale> getSaleById(String saleID) throws MongoException {
         Document document = collection.find(Filters.eq("property_id", Long.parseLong(saleID))).first();
-        collection.updateOne(Filters.eq("property_id", Long.parseLong(saleID)), Updates.inc("property_accessed_count", 1));
         return Optional.ofNullable(fromDocument(document));
     }
 
@@ -74,7 +72,6 @@ public class SalesDAO {
                 sales.add(homeSale);
             }
         }
-        collection.updateMany(Filters.eq("post_code", Long.parseLong(postCode)), Updates.inc("post_code_accessed_count", 1));
         return sales;
     }
 
