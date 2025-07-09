@@ -1,5 +1,4 @@
 import com.mongodb.MongoException;
-
 import io.javalin.http.Context;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
@@ -7,7 +6,6 @@ import io.javalin.openapi.OpenApiContent;
 import io.javalin.openapi.OpenApiParam;
 import io.javalin.openapi.OpenApiRequestBody;
 import io.javalin.openapi.OpenApiResponse;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
