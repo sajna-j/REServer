@@ -37,7 +37,7 @@ public class AnalyticsController {
     String propertyId = ctx.pathParam("propertyID");
     Document count = analyticsDAO.viewPropertyAnalytics(propertyId);
     if (count != null) {
-      ctx.status(200).result((String) count.get("property_accessed_count"));
+      ctx.status(200).result(count.get("property_accessed_count").toString());
     } else {
       ctx.status(404).result("Property not found");
     }
@@ -47,7 +47,7 @@ public class AnalyticsController {
     String postcode = ctx.pathParam("postcodeID");
     Document count = analyticsDAO.viewPostcodeAnalytics(postcode);
     if (count != null) {
-      ctx.status(200).result((String) count.get("post_code_accessed_count"));
+      ctx.status(200).result(count.get("post_code_accessed_count").toString());
     } else {
       ctx.status(404).result("Postcode not found");
     }
