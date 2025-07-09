@@ -1,89 +1,151 @@
+
 import io.javalin.Javalin;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class APIGateway {
-
   public static void main(String[] args) {
+    HttpClient client = HttpClient.newHttpClient();
 
-    PropertyServer propertyServer = new PropertyServer();
-    AnalyticsServer analyticsServer = new AnalyticsServer();
+    Javalin.create(config -> {
+      config.router.apiBuilder(() -> {
 
-    Javalin app = Javalin.create().routes(() -> {
+        get("/", ctx -> ctx.result("API Gateway is running"));
 
-      get("/", ctx -> ctx.result("API Gateway is running"));
+        // GET /sales/{saleID}
+        get("/sales/{saleID}", ctx -> {
+          String saleId = ctx.pathParam("saleID");
 
-      get("/sales", ctx -> {
-        try {
-          String response = propertyServer.getAllSales();
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property Service: " + e.getMessage());
-        }
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/" + saleId))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 2. Call Analytics Server
+          HttpRequest analyticsReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7071/analytics/property/" + saleId + "/increment"))
+                  .method("PUT", HttpRequest.BodyPublishers.noBody()) // 👈 use PUT here
+                  .build();
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET /sales
+        get("/sales", ctx -> {
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales"))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        // GET /sales/{saleID}
+        get("/sales/postcode/{postcodeID}", ctx -> {
+          String postcodeID = ctx.pathParam("postcodeID");
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/postcode/" + postcodeID))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 2. Call Analytics Server
+          HttpRequest analyticsReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID + "/increment"))
+                  .method("PUT", HttpRequest.BodyPublishers.noBody())
+                  .build();
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET average price per square meter
+        get("/sales/price_per_square_meter/average", ctx -> {
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/price_per_square_meter/average"))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET max price per square meter
+        get("/sales/price_per_square_meter/high", ctx -> {
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/price_per_square_meter/high"))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET min price per square meter
+        get("/sales/price_per_square_meter/low", ctx -> {
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/price_per_square_meter/low"))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET property analytics count
+        get("/analytics/property/{propertyID}", ctx -> {
+          String propertyID = ctx.pathParam("propertyID");
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7071/analytics/property/" + propertyID))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
+        //GET postcode analytics count
+        get("/analytics/postcode/{postcodeID}", ctx -> {
+          String postcodeID = ctx.pathParam("postcodeID");
+
+          // 1. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
+
+          // 3. Return the property data
+          ctx.result(propRes.body());
+          ctx.status(propRes.statusCode());
+        });
+
       });
-
-      post("/sales", ctx -> {
-        try {
-          String body = ctx.body();
-          String response = propertyServer.createSale(body);
-          ctx.result(response);
-          ctx.status(201);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property Service: " + e.getMessage());
-        }
-      });
-
-      get("/sales/{id}", ctx -> {
-        try {
-          String id = ctx.pathParam("id");
-          analyticsServer.incrementPropertyView(id);
-          String response = propertyServer.getSaleById(id);
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property or Analytics Service: " + e.getMessage());
-        }
-      });
-
-      get("/sales/postcode/{postcode}", ctx -> {
-        try {
-          String postcode = ctx.pathParam("postcode");
-          analyticsServer.incrementPostcodeView(postcode);
-          String response = propertyServer.getSalesByPostcode(postcode);
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property or Analytics Service: " + e.getMessage());
-        }
-      });
-
-      get("/sales/price_per_square_meter/average", ctx -> {
-        try {
-          String response = propertyServer.getAvgPricePerSqM();
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property Service: " + e.getMessage());
-        }
-      });
-
-      get("/sales/price_per_square_meter/high", ctx -> {
-        try {
-          String response = propertyServer.getHighPricePerSqM();
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property Service: " + e.getMessage());
-        }
-      });
-
-      get("/sales/price_per_square_meter/low", ctx -> {
-        try {
-          String response = propertyServer.getLowPricePerSqM();
-          ctx.result(response);
-        } catch (Exception e) {
-          ctx.status(500).result("Error contacting Property Service: " + e.getMessage());
-        }
-      });
-
-    });
-
-    app.start(7070);
-    System.out.println("API Gateway running on http://localhost:7070");
+    }).start(7070); // API Gateway on port 7070
   }
 }

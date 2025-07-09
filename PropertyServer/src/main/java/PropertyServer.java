@@ -30,6 +30,6 @@ public class PropertyServer {
         get("/sales/price_per_square_meter/high", salesHandler::highPricePerSquareMeter);
         get("/sales/price_per_square_meter/low", salesHandler::lowPricePerSquareMeter);
       });
-    }).start(7071);
+    }).start(7072);
   }
 }

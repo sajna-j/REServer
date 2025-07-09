@@ -27,6 +27,6 @@ public class AnalyticsServer {
                 get("/analytics/property/{propertyID}", analyticsHandler::viewPropertyAnalytics);
                 get("/analytics/postcode/{postcodeID}", analyticsHandler::viewPostcodeAnalytics);
             });
-        }).start(7072);
+        }).start(7071);
     }
 }

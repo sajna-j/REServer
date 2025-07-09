@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="de501043-aafb-4a41-9e24-49285bd605ad" name="Changes" comment="some stuff">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sales/SalesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/SalesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnalyticsServer/src/main/java/AnalyticsServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/AnalyticsServer/src/main/java/AnalyticsServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PropertyServer/src/main/java/PropertyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/PropertyServer/src/main/java/PropertyServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +49,7 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2q3FPGovHE4vwevedoceD9Xl1eL" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -57,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "addMethodMongo",
+    "git-widget-placeholder": "microservices",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -72,10 +75,26 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="REServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app.REServer" />
-      <module name="REServer" />
+  <component name="RunManager" selected="Application.PropertyServer">
+    <configuration name="APIGateway" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="temurin-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="APIGateway" />
+      <module name="APIGateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnalyticsServer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="AnalyticsServer" />
+      <module name="AnalyticsServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PropertyServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PropertyServer" />
+      <module name="PropertyServer" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="app.*" />
@@ -92,9 +111,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.AnalyticsServer" />
+      <item itemvalue="Application.APIGateway" />
+      <item itemvalue="Application.PropertyServer" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.REServer" />
+        <item itemvalue="Application.PropertyServer" />
       </list>
     </recent_temporary>
   </component>
@@ -184,5 +208,26 @@
     <MESSAGE value="remove unused imports" />
     <MESSAGE value="some stuff" />
     <option name="LAST_COMMIT_MESSAGE" value="some stuff" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
