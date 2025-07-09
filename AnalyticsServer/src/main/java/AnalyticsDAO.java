@@ -28,7 +28,7 @@ public class AnalyticsDAO {
 
   public Document incrementPropertyAnalytics(String saleID) {
     collection.updateOne(Filters.eq("property_id", Long.parseLong(saleID)), Updates.inc("property_accessed_count", 1));
-    return viewPostcodeAnalytics(saleID);
+    return viewPropertyAnalytics(saleID);
   }
 
   public Document viewPostcodeAnalytics(String postCode) {

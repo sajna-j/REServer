@@ -21,17 +21,24 @@ public class APIGateway {
         get("/sales/{saleID}", ctx -> {
           String saleId = ctx.pathParam("saleID");
 
-          // 1. Call Property Server
+          // 1. Call Analytics Server
+          try {
+            HttpRequest analyticsReq = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:7071/analytics/property/" + saleId + "/increment"))
+                    .PUT(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            client.send(analyticsReq, HttpResponse.BodyHandlers.ofString());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
+
+          // 2. Call Property Server
           HttpRequest propReq = HttpRequest.newBuilder()
                   .uri(URI.create("http://localhost:7072/sales/" + saleId))
                   .build();
           HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
-
-          // 2. Call Analytics Server
-          HttpRequest analyticsReq = HttpRequest.newBuilder()
-                  .uri(URI.create("http://localhost:7071/analytics/property/" + saleId + "/increment"))
-                  .method("PUT", HttpRequest.BodyPublishers.noBody()) // 👈 use PUT here
-                  .build();
 
           // 3. Return the property data
           ctx.result(propRes.body());
@@ -56,17 +63,17 @@ public class APIGateway {
         get("/sales/postcode/{postcodeID}", ctx -> {
           String postcodeID = ctx.pathParam("postcodeID");
 
-          // 1. Call Property Server
-          HttpRequest propReq = HttpRequest.newBuilder()
-                  .uri(URI.create("http://localhost:7072/sales/postcode/" + postcodeID))
-                  .build();
-          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
-
-          // 2. Call Analytics Server
+          // 1. Call Analytics Server
           HttpRequest analyticsReq = HttpRequest.newBuilder()
                   .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID + "/increment"))
                   .method("PUT", HttpRequest.BodyPublishers.noBody())
                   .build();
+
+          // 2. Call Property Server
+          HttpRequest propReq = HttpRequest.newBuilder()
+                  .uri(URI.create("http://localhost:7072/sales/postcode/" + postcodeID))
+                  .build();
+          HttpResponse<String> propRes = client.send(propReq, HttpResponse.BodyHandlers.ofString());
 
           // 3. Return the property data
           ctx.result(propRes.body());
