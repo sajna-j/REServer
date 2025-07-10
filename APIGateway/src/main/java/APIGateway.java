@@ -22,6 +22,7 @@ public class APIGateway {
           String saleId = ctx.pathParam("saleID");
 
           // 1. Call Analytics Server
+          /*
           try {
             HttpRequest analyticsReq = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:7071/analytics/property/" + saleId + "/increment"))
@@ -32,7 +33,7 @@ public class APIGateway {
           } catch (Exception e) {
             e.printStackTrace();
           }
-
+         */
 
           // 2. Call Property Server
           HttpRequest propReq = HttpRequest.newBuilder()
@@ -64,6 +65,7 @@ public class APIGateway {
           String postcodeID = ctx.pathParam("postcodeID");
 
           // 1. Call Analytics Server
+          /*
           try {
             HttpRequest analyticsReq = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID + "/increment"))
@@ -74,6 +76,7 @@ public class APIGateway {
           } catch (Exception e) {
             e.printStackTrace();
           }
+          */
 
           // 2. Call Property Server
           HttpRequest propReq = HttpRequest.newBuilder()
