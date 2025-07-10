@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="de501043-aafb-4a41-9e24-49285bd605ad" name="Changes" comment="some stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sales/SalesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/SalesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sales/SalesDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java" beforeDir="false" afterPath="$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +39,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
@@ -47,35 +49,53 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2q3FPGovHE4vwevedoceD9Xl1eL" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.REServer.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "addMethodMongo",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/gorto/OneDrive - Northeastern University/DoCs/CS4530/REServer/src/main/java/neu/cs/doc/cs4530/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.updates",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.REServer.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;microservices&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/gorto/OneDrive - Northeastern University/DoCs/CS4530/REServer/src/main/java/neu/cs/doc/cs4530/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration name="REServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app.REServer" />
-      <module name="REServer" />
+}</component>
+  <component name="RunManager" selected="Application.AnalyticsServer">
+    <configuration name="APIGateway" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="temurin-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="APIGateway" />
+      <module name="APIGateway" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnalyticsServer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="AnalyticsServer" />
+      <module name="AnalyticsServer" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PropertyServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PropertyServer" />
+      <module name="PropertyServer" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="app.*" />
@@ -92,9 +112,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.AnalyticsServer" />
+      <item itemvalue="Application.APIGateway" />
+      <item itemvalue="Application.PropertyServer" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.REServer" />
+        <item itemvalue="Application.PropertyServer" />
       </list>
     </recent_temporary>
   </component>
@@ -119,6 +144,8 @@
       <workItem from="1744234066152" duration="46271000" />
       <workItem from="1746429621778" duration="977000" />
       <workItem from="1751590322465" duration="7076000" />
+      <workItem from="1752073074411" duration="2961000" />
+      <workItem from="1752102634515" duration="1405000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -184,5 +211,31 @@
     <MESSAGE value="remove unused imports" />
     <MESSAGE value="some stuff" />
     <option name="LAST_COMMIT_MESSAGE" value="some stuff" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>131</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/APIGateway/src/main/java/APIGateway.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/AnalyticsServer/src/main/java/AnalyticsController.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

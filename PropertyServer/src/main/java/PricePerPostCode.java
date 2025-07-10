@@ -1,12 +1,9 @@
-package sales;
-
 public class PricePerPostCode {
 
   private String postCode;
   private double pricePerSquareMeter;
 
-  public PricePerPostCode() {
-  }
+  public PricePerPostCode() {}
 
   public PricePerPostCode(String postCode, double pricePerSquareMeter) {
     this.postCode = postCode;
