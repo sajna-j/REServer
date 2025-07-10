@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class RabbitMQPublisher {
-  private static final String QUEUE_NAME = "analytics_queue";
   private final Channel channel;
 
   public RabbitMQPublisher() throws Exception {
@@ -13,11 +12,12 @@ public class RabbitMQPublisher {
     factory.setHost("localhost");
     Connection connection = factory.newConnection();
     this.channel = connection.createChannel();
-    channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+    channel.queueDeclare("property_id_queue", true, false, false, null);
+    channel.queueDeclare("post_code_queue", true, false, false, null);
   }
 
-  public void publishMessage(String message) throws IOException {
-    channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
+  public void publishMessage(String queueName, String message) throws IOException {
+    channel.basicPublish("", queueName, null, message.getBytes(StandardCharsets.UTF_8));
   }
 
   public void close() throws Exception {

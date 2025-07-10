@@ -109,7 +109,7 @@ public class SalesController {
     Optional<HomeSale> sale = Optional.empty();
     try {
       sale = homeSales.getSaleById(id);
-      publisher.publishMessage("PropertyID " + id);
+      publisher.publishMessage("property_id_queue", id);
     } catch (MongoException e) {
       ctx.result("Database error: " + e.getMessage());
       ctx.status(500);
@@ -140,9 +140,12 @@ public class SalesController {
     List<HomeSale> sales = new ArrayList<>();
     try {
       sales = homeSales.getSalesByPostCode(postCode);
+      publisher.publishMessage("post_code_queue", postCode);
     } catch (MongoException e) {
       ctx.result("Database error: " + e.getMessage());
       ctx.status(500);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
     if (sales.isEmpty()) {
       ctx.result("No sales for postcode found");
