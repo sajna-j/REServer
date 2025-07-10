@@ -11,6 +11,22 @@ public class AnalyticsServer {
         var sales = new AnalyticsDAO();
         var analyticsHandler = new AnalyticsController(sales);
 
+        new Thread(() -> {
+            try {
+                new RabbitMQConsumer("property_id_queue", sales).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                new RabbitMQConsumer("post_code_queue", sales).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
         Javalin.create(config -> {
             config.registerPlugin(new OpenApiPlugin(pluginConfig -> {
                 pluginConfig.withDefinitionConfiguration((version, definition) -> {
