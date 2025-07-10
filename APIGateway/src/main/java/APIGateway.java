@@ -59,15 +59,21 @@ public class APIGateway {
           ctx.status(propRes.statusCode());
         });
 
-        // GET /sales/{saleID}
+        // GET /sales/postcode/{postcodeID}
         get("/sales/postcode/{postcodeID}", ctx -> {
           String postcodeID = ctx.pathParam("postcodeID");
 
           // 1. Call Analytics Server
-          HttpRequest analyticsReq = HttpRequest.newBuilder()
-                  .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID + "/increment"))
-                  .method("PUT", HttpRequest.BodyPublishers.noBody())
-                  .build();
+          try {
+            HttpRequest analyticsReq = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:7071/analytics/postcode/" + postcodeID + "/increment"))
+                    .PUT(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            client.send(analyticsReq, HttpResponse.BodyHandlers.ofString());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
 
           // 2. Call Property Server
           HttpRequest propReq = HttpRequest.newBuilder()
