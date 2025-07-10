@@ -8,8 +8,16 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class PropertyServer {
   public static void main(String[] args) {
 
-    var sales = new SalesDAO();
-    var salesHandler = new SalesController(sales);
+    SalesDAO sales = new SalesDAO();
+    RabbitMQPublisher publisher;
+
+    try {
+      publisher = new RabbitMQPublisher();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+
+    var salesHandler = new SalesController(sales, publisher);
 
     Javalin.create(config -> {
       config.registerPlugin(new OpenApiPlugin(pluginConfig -> {

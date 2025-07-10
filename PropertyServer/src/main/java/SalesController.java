@@ -6,6 +6,8 @@ import io.javalin.openapi.OpenApiContent;
 import io.javalin.openapi.OpenApiParam;
 import io.javalin.openapi.OpenApiRequestBody;
 import io.javalin.openapi.OpenApiResponse;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class SalesController {
 
   private final SalesDAO homeSales;
+  private final RabbitMQPublisher publisher;
 
-  public SalesController(SalesDAO homeSales) {
+  public SalesController(SalesDAO homeSales, RabbitMQPublisher publisher) {
     this.homeSales = homeSales;
+    this.publisher = publisher;
   }
 
   @OpenApi(
@@ -105,9 +109,12 @@ public class SalesController {
     Optional<HomeSale> sale = Optional.empty();
     try {
       sale = homeSales.getSaleById(id);
+      publisher.publishMessage("PropertyID " + id);
     } catch (MongoException e) {
       ctx.result("Database error: " + e.getMessage());
       ctx.status(500);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
     sale.map(ctx::json)
             .orElseGet(() -> error(ctx, "Sale not found", 404));
